@@ -1,10 +1,11 @@
-package jgmysql
+package jgmysql_test
 
 import (
 	"fmt"
 	"testing"
 
 	jgconf "github.com/Jinglever/go-config"
+	jgmysql "github.com/Jinglever/go-mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -18,7 +19,7 @@ func openDb() *gorm.DB {
 		Pass   string `mapstructure:"pass"`
 		DbName string `mapstructure:"dbname"`
 	}{}
-	jgconf.LoadYamlConfig("./_test_data/conf.yml", &cfg)
+	jgconf.LoadYamlConfig("./_data/conf.yml", &cfg)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		cfg.User, cfg.Pass, cfg.Host, cfg.Port, cfg.DbName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -31,7 +32,7 @@ func openDb() *gorm.DB {
 // test helper QueryDbVersion
 func TestQueryDbVersion(t *testing.T) {
 	db := openDb()
-	helper := NewHelper(db)
+	helper := jgmysql.NewHelper(db)
 	version, err := helper.QueryDbVersion()
 	if err != nil {
 		t.Errorf("query db version failed, err: %v", err)
@@ -43,7 +44,7 @@ func TestQueryDbVersion(t *testing.T) {
 // test helper QueryDbCharset
 func TestQueryDbCharset(t *testing.T) {
 	db := openDb()
-	helper := NewHelper(db)
+	helper := jgmysql.NewHelper(db)
 	charset, err := helper.QueryDbCharset()
 	if err != nil {
 		t.Errorf("query db charset failed, err: %v", err)
@@ -55,7 +56,7 @@ func TestQueryDbCharset(t *testing.T) {
 // test helper QueryDbCollate
 func TestQueryDbCollate(t *testing.T) {
 	db := openDb()
-	helper := NewHelper(db)
+	helper := jgmysql.NewHelper(db)
 	collate, err := helper.QueryDbCollate()
 	if err != nil {
 		t.Errorf("query db collate failed, err: %v", err)
@@ -67,7 +68,7 @@ func TestQueryDbCollate(t *testing.T) {
 // test helper QueryAllTables
 func TestQueryAllTables(t *testing.T) {
 	db := openDb()
-	helper := NewHelper(db)
+	helper := jgmysql.NewHelper(db)
 	tables, err := helper.QueryAllTables()
 	if err != nil {
 		t.Errorf("query all tables failed, err: %v", err)
@@ -79,7 +80,7 @@ func TestQueryAllTables(t *testing.T) {
 // test helper QueryCreateTableSql
 func TestQueryCreateTableSql(t *testing.T) {
 	db := openDb()
-	helper := NewHelper(db)
+	helper := jgmysql.NewHelper(db)
 	sql, err := helper.QueryCreateTableSql("user")
 	if err != nil {
 		t.Errorf("query create table sql failed, err: %v", err)

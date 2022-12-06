@@ -1,4 +1,4 @@
-module github.com/Jinglever/go-mysql-helper
+module github.com/Jinglever/go-mysql
 
 go 1.19
 
