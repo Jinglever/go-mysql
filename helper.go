@@ -15,7 +15,7 @@ func NewHelper(db *gorm.DB) *Helper {
 }
 
 // query version of database
-func (h *Helper) QueryDbVersion() (string, error) {
+func (h *Helper) QueryDBVersion() (string, error) {
 	var version string
 	err := h.DB.Raw("select version()").Scan(&version).Error
 	if err != nil {
@@ -25,7 +25,7 @@ func (h *Helper) QueryDbVersion() (string, error) {
 }
 
 // query charset of database
-func (h *Helper) QueryDbCharset() (string, error) {
+func (h *Helper) QueryDBCharset() (string, error) {
 	var records = make([]map[string]interface{}, 0)
 	err := h.DB.Raw("show variables like 'character_set_database'").Scan(&records).Error
 	if err != nil {
@@ -35,7 +35,7 @@ func (h *Helper) QueryDbCharset() (string, error) {
 }
 
 // query collate of database
-func (h *Helper) QueryDbCollate() (string, error) {
+func (h *Helper) QueryDBCollate() (string, error) {
 	var records = make([]map[string]interface{}, 0)
 	err := h.DB.Raw("show variables like 'collation_database'").Scan(&records).Error
 	if err != nil {

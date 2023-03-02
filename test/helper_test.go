@@ -11,17 +11,17 @@ import (
 )
 
 // open connection to mysql
-func openDb() *gorm.DB {
+func openDB() *gorm.DB {
 	cfg := struct {
 		Host   string `mapstructure:"host"`
 		Port   string `mapstructure:"port"`
 		User   string `mapstructure:"user"`
 		Pass   string `mapstructure:"pass"`
-		DbName string `mapstructure:"dbname"`
+		DBName string `mapstructure:"dbname"`
 	}{}
 	jgconf.LoadYamlConfig("./_data/conf.yml", &cfg)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		cfg.User, cfg.Pass, cfg.Host, cfg.Port, cfg.DbName)
+		cfg.User, cfg.Pass, cfg.Host, cfg.Port, cfg.DBName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -29,11 +29,11 @@ func openDb() *gorm.DB {
 	return db
 }
 
-// test helper QueryDbVersion
-func TestQueryDbVersion(t *testing.T) {
-	db := openDb()
+// test helper QueryDBVersion
+func TestQueryDBVersion(t *testing.T) {
+	db := openDB()
 	helper := jgmysql.NewHelper(db)
-	version, err := helper.QueryDbVersion()
+	version, err := helper.QueryDBVersion()
 	if err != nil {
 		t.Errorf("query db version failed, err: %v", err)
 	} else {
@@ -41,11 +41,11 @@ func TestQueryDbVersion(t *testing.T) {
 	}
 }
 
-// test helper QueryDbCharset
-func TestQueryDbCharset(t *testing.T) {
-	db := openDb()
+// test helper QueryDBCharset
+func TestQueryDBCharset(t *testing.T) {
+	db := openDB()
 	helper := jgmysql.NewHelper(db)
-	charset, err := helper.QueryDbCharset()
+	charset, err := helper.QueryDBCharset()
 	if err != nil {
 		t.Errorf("query db charset failed, err: %v", err)
 	} else {
@@ -53,11 +53,11 @@ func TestQueryDbCharset(t *testing.T) {
 	}
 }
 
-// test helper QueryDbCollate
-func TestQueryDbCollate(t *testing.T) {
-	db := openDb()
+// test helper QueryDBCollate
+func TestQueryDBCollate(t *testing.T) {
+	db := openDB()
 	helper := jgmysql.NewHelper(db)
-	collate, err := helper.QueryDbCollate()
+	collate, err := helper.QueryDBCollate()
 	if err != nil {
 		t.Errorf("query db collate failed, err: %v", err)
 	} else {
@@ -67,7 +67,7 @@ func TestQueryDbCollate(t *testing.T) {
 
 // test helper QueryAllTables
 func TestQueryAllTables(t *testing.T) {
-	db := openDb()
+	db := openDB()
 	helper := jgmysql.NewHelper(db)
 	tables, err := helper.QueryAllTables()
 	if err != nil {
@@ -79,7 +79,7 @@ func TestQueryAllTables(t *testing.T) {
 
 // test helper QueryCreateTableSql
 func TestQueryCreateTableSql(t *testing.T) {
-	db := openDb()
+	db := openDB()
 	helper := jgmysql.NewHelper(db)
 	sql, err := helper.QueryCreateTableSql("user")
 	if err != nil {
